@@ -3,8 +3,15 @@
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
-(setq package-selected-packages '(which-key vertico consult denote orderless corfu rainbow-delimiters org-download org-noter pdf-tools mpv lsp-mode avy ef-themes lsp-pyright cheat-sh helpful elisp-demos cape expand-region))
+(setq package-selected-packages '(which-key vertico consult denote orderless corfu rainbow-delimiters org-download org-noter pdf-tools mpv lsp-mode avy ef-themes lsp-pyright cheat-sh helpful elisp-demos cape expand-region tree-sitter tree-sitter-langs vundo lsp-ui marginalia pug-mode magit))
 (package-install-selected-packages)
+
+;;keybindings
+(define-key global-map (kbd "M-o") #'other-window)
+(define-key global-map (kbd "C-c o") #'delete-other-windows)
+(define-key global-map (kbd "<f7>") #'previous-buffer)
+(define-key global-map (kbd "<f8>") #'next-buffer)
+
 
 ;;custom file
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/my-custom-files"))
@@ -46,6 +53,7 @@
 (setq read-file-name-completion-ignore-case t)
 (setq completion-cycle-threshold 3)
 
+;;misc.
 (add-hook 'text-mode-hook #'flyspell-mode)
 (global-auto-revert-mode 1)
 (setq auto-revert-mode 1)
@@ -56,6 +64,7 @@
 (recentf-mode 1)
 (which-key-mode)
 (vertico-mode)
+(marginalia-mode)
 
 ;;lsp
 (setq lsp-completion-provider :none)
@@ -66,6 +75,10 @@
 (add-hook 'python-mode-hook (lambda () (require 'lsp-pyright) (lsp)))
 (add-hook 'c-mode-hook #'lsp)
 (add-hook 'js-mode-hook #'lsp)
+
+;;treesitter
+(global-tree-sitter-mode)
+(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
 
 ;;pdf
 (pdf-loader-install)
@@ -81,8 +94,9 @@
 (setq org-startup-folded 'nofold)
 (setq org-hide-block-startup t)
 (setq org-noter-auto-save-last-location t)
-(setq org-noter-notes-search-path '("~/Org"))
+(setq org-noter-notes-search-path '("~/Documents/Org"))
 (require 'org-download)
+(setq org-clock-sound "/usr/lib/libreoffice/share/gallery/sounds/apert.wav")
 
 
 ;;whitespace
@@ -90,6 +104,7 @@
 (setq-default require-final-newline t)
 
 ;;UI
+(global-tab-line-mode 1)
 (setq-default indicate-empty-lines t)
 (global-visual-line-mode 1)
 (blink-cursor-mode 0)
@@ -100,10 +115,9 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
-(load-theme 'ef-trio-dark t)
-(define-key global-map (kbd "<f5>") #'modus-themes-toggle)
+(load-theme 'modus-operandi t)
 ;;main typeface
-(set-face-attribute 'default nil :family "JetBrains Mono" :height 110)
+(set-face-attribute 'default nil :family "JetBrains Mono" :height 100)
 ;; Proportionately spaced typeface
 (set-face-attribute 'variable-pitch nil :family "Noto Sans" :height 1.0)
 ;; Monospaced typeface
