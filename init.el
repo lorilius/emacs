@@ -3,7 +3,7 @@
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
-(setq package-selected-packages '(which-key vertico consult denote orderless corfu rainbow-delimiters org-download org-noter pdf-tools mpv lsp-mode avy ef-themes lsp-pyright cheat-sh helpful elisp-demos cape expand-region tree-sitter tree-sitter-langs vundo lsp-ui marginalia pug-mode magit))
+(setq package-selected-packages '(which-key vertico consult denote orderless corfu rainbow-delimiters org-download org-noter pdf-tools mpv lsp-mode avy ef-themes lsp-pyright cheat-sh helpful elisp-demos cape expand-region tree-sitter tree-sitter-langs vundo lsp-ui marginalia pug-mode magit ample-theme ztree))
 (package-install-selected-packages)
 
 ;;keybindings
@@ -11,6 +11,7 @@
 (define-key global-map (kbd "C-c o") #'delete-other-windows)
 (define-key global-map (kbd "<f7>") #'previous-buffer)
 (define-key global-map (kbd "<f8>") #'next-buffer)
+(define-key global-map (kbd "C-j") #'newline)
 
 
 ;;custom file
@@ -104,7 +105,7 @@
 (setq-default require-final-newline t)
 
 ;;UI
-(global-tab-line-mode 1)
+;;(global-tab-line-mode 1)
 (setq-default indicate-empty-lines t)
 (global-visual-line-mode 1)
 (blink-cursor-mode 0)
@@ -122,6 +123,7 @@
 (set-face-attribute 'variable-pitch nil :family "Noto Sans" :height 1.0)
 ;; Monospaced typeface
 (set-face-attribute 'fixed-pitch nil :family "JetBrains Mono" :height 1.0)
+(setq bookmark-set-fringe-mark nil)
 
 ;;consult
 (define-key global-map (kbd "C-c r") #'consult-recent-file)
