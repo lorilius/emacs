@@ -3,7 +3,7 @@
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
-(setq package-selected-packages '(which-key vertico consult denote orderless corfu rainbow-delimiters org-download org-noter pdf-tools mpv lsp-mode avy ef-themes lsp-pyright cheat-sh helpful elisp-demos cape expand-region tree-sitter tree-sitter-langs vundo lsp-ui marginalia pug-mode magit ample-theme ztree))
+(setq package-selected-packages '(which-key vertico consult denote orderless corfu rainbow-delimiters org-download org-noter pdf-tools mpv lsp-mode avy ef-themes lsp-pyright cheat-sh helpful elisp-demos cape expand-region tree-sitter tree-sitter-langs vundo lsp-ui marginalia pug-mode magit ample-theme ztree olivetti))
 (package-install-selected-packages)
 
 ;;keybindings
@@ -85,8 +85,8 @@
 (pdf-loader-install)
 (setq pdf-annot-default-annotation-properties `((t (label . ,user-full-name))
     (text (icon . "Note")
-          (color . "#ff0000"))
-    (highlight (color . "SeaGreen1"))
+          (color . "#98fb98"))
+    (highlight (color . "PaleTurquoise1"))
     (squiggly (color . "orange"))
     (strike-out(color . "red"))
     (underline (color . "blue"))))
@@ -94,10 +94,13 @@
 ;;org
 (setq org-startup-folded 'nofold)
 (setq org-hide-block-startup t)
+(setq org-startup-with-inline-images t)
 (setq org-noter-auto-save-last-location t)
 (setq org-noter-notes-search-path '("~/Documents/Org"))
 (require 'org-download)
 (setq org-clock-sound "/usr/lib/libreoffice/share/gallery/sounds/apert.wav")
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+(add-hook 'org-mode-hook #'olivetti-mode)
 
 
 ;;whitespace
@@ -124,6 +127,10 @@
 ;; Monospaced typeface
 (set-face-attribute 'fixed-pitch nil :family "JetBrains Mono" :height 1.0)
 (setq bookmark-set-fringe-mark nil)
+;;display the number of matches in a search
+(setq isearch-lazy-count t)
+(setq lazy-count-prefix-format nil)
+(setq lazy-count-suffix-format "   (%s/%s)")
 
 ;;consult
 (define-key global-map (kbd "C-c r") #'consult-recent-file)
