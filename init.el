@@ -3,7 +3,7 @@
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
   (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
 (package-initialize)
-(setq package-selected-packages '(which-key vertico consult denote orderless corfu rainbow-delimiters org-download org-noter pdf-tools mpv lsp-mode avy ef-themes lsp-pyright cheat-sh helpful elisp-demos cape expand-region tree-sitter tree-sitter-langs vundo lsp-ui marginalia pug-mode magit ample-theme ztree olivetti))
+(setq package-selected-packages '(which-key vertico consult denote orderless corfu rainbow-delimiters org-download org-noter pdf-tools mpv lsp-mode avy ef-themes lsp-pyright cheat-sh helpful elisp-demos cape expand-region vundo lsp-ui marginalia pug-mode magit ample-theme ztree olivetti))
 (package-install-selected-packages)
 
 ;;keybindings
@@ -77,13 +77,40 @@
   (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
         '(orderless)))
 (add-hook 'lsp-completion-mode-hook #'my/lsp-mode-setup-completion)
-(add-hook 'python-mode-hook (lambda () (require 'lsp-pyright) (lsp)))
-(add-hook 'c-mode-hook #'lsp)
-(add-hook 'js-mode-hook #'lsp)
+(add-hook 'python-ts-mode-hook (lambda () (require 'lsp-pyright) (lsp)))
+(add-hook 'c-ts-mode-hook #'lsp)
+(add-hook 'js-ts-mode-hook #'lsp)
 
 ;;treesitter
-(global-tree-sitter-mode)
-(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+(setq treesit-language-source-alist
+      '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+        (cmake "https://github.com/uyha/tree-sitter-cmake")
+        (css "https://github.com/tree-sitter/tree-sitter-css")
+        (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+        (go "https://github.com/tree-sitter/tree-sitter-go")
+        (html "https://github.com/tree-sitter/tree-sitter-html")
+        (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+        (json "https://github.com/tree-sitter/tree-sitter-json")
+        (make "https://github.com/alemuller/tree-sitter-make")
+        (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+        (python "https://github.com/tree-sitter/tree-sitter-python")
+        (toml "https://github.com/tree-sitter/tree-sitter-toml")
+        (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+        (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+        (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+        (c "https://github.com/tree-sitter/tree-sitter-c")
+        (cpp "https://github.com/tree-sitter/tree-sitter-cpp")))
+(setq major-mode-remap-alist
+      '((yaml-mode . yaml-ts-mode)
+        (bash-mode . bash-ts-mode)
+        (js-mode . js-ts-mode)
+        (typescript-mode . typescript-ts-mode)
+        (json-mode . json-ts-mode)
+        (css-mode . css-ts-mode)
+        (python-mode . python-ts-mode)
+        (c-mode . c-ts-mode)
+        (c++-mode . c++-ts-mode)))
+(setq treesit-font-lock-level 4)
 
 ;;pdf
 (pdf-loader-install)
@@ -97,7 +124,7 @@
 
 ;;org
 (setq org-startup-folded 'nofold)
-(setq org-hide-block-startup t)
+;;(setq org-hide-block-startup t)
 (setq org-startup-with-inline-images t)
 (setq org-noter-auto-save-last-location t)
 (setq org-noter-notes-search-path '("~/Documents/Org"))
@@ -123,7 +150,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
-(load-theme 'modus-operandi t)
+(load-theme 'modus-vivendi-tritanopia t)
 ;;main typeface
 (set-face-attribute 'default nil :family "JetBrains Mono" :height 100)
 ;; Proportionately spaced typeface
