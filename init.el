@@ -12,7 +12,10 @@
 (define-key global-map (kbd "<f7>") #'previous-buffer)
 (define-key global-map (kbd "<f8>") #'next-buffer)
 (define-key global-map (kbd "C-j") #'newline)
-
+(define-key global-map (kbd "M-n") #'my/scroll-up-in-place)
+(define-key global-map (kbd "M-p") #'my/scroll-down-in-place)
+(define-key global-map (kbd "M-v") #'my/scroll-down-half-page)
+(define-key global-map (kbd "C-v") #'my/scroll-up-half-page)
 
 ;;custom file
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/my-custom-files"))
@@ -27,7 +30,7 @@
 (global-set-key (kbd "C-=") 'er/expand-region)
 (delete-selection-mode 1)
 
-;;helpful
+;;helpful (package)
 (setq helpful-max-buffers 2)
 (global-set-key (kbd "C-h f") #'helpful-callable)
 (global-set-key (kbd "C-h v") #'helpful-variable)
@@ -66,6 +69,7 @@
 (which-key-mode)
 (vertico-mode)
 (marginalia-mode)
+(setq scroll-conservatively 101)
 
 ;;lsp
 (setq lsp-completion-provider :none)
@@ -180,5 +184,39 @@
 (defun buffer-line-count () 
   "Return the number of lines in this buffer."
   (count-lines (point-min) (point-max)))
+
+(defun my/scroll-down-in-place (n)
+  (interactive "p")
+  ;;(previous-line 2)
+  (unless (eq (window-start) (point-min))
+    (scroll-down n)))
+
+(defun my/scroll-up-in-place (n)
+  (interactive "p")
+  ;;(next-line 2)
+  (unless (eq (window-end) (point-max))
+    (scroll-up n)))
+
+(defun my/scroll-up-half-page ()
+  "scroll down half a page while keeping the cursor centered"
+  (interactive)
+  (let ((ln (line-number-at-pos (point)))
+    (lmax (line-number-at-pos (point-max))))
+    (cond ((= ln 1) (move-to-window-line nil))
+      ((= ln lmax) (recenter (window-end)))
+      (t (progn
+           (move-to-window-line -1)
+           (recenter))))))
+
+(defun my/scroll-down-half-page ()
+  "scroll up half a page while keeping the cursor centered"
+  (interactive)
+  (let ((ln (line-number-at-pos (point)))
+    (lmax (line-number-at-pos (point-max))))
+    (cond ((= ln 1) nil)
+      ((= ln lmax) (move-to-window-line nil))
+      (t (progn
+           (move-to-window-line 0)
+           (recenter))))))
 
 (put 'narrow-to-region 'disabled nil)
